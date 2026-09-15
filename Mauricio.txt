@@ -1,1 +1,9 @@
+<<<<<<< HEAD
+<<<<<<< HEAD
+hola mundo
+=======
+hola mundo
+>>>>>>> 1d5bc312feaf085a70408eaaf6258b1eeebdec7e
+=======
 viva caribe
+>>>>>>> f958f84c7e6f8acef1cea132ef0540ee66694b0a
