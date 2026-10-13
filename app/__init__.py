@@ -1,20 +1,29 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from flask_jwt_extended import JWTManager
 
-db = SQLAlchemy()
+# Importamos las configuraciones y extensiones
+from app.config import config
+from app.extensions import db
+
+# IMPORTANTE: Importamos el modelo para que la base de datos lo cree automáticamente
+from app.models import Producto
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(
+        __name__,
+        static_folder="static",
+        template_folder="templates"
+    )
     
-    # Configuración de la Base de Datos MySQL usando el contenedor 'SIPSIXA_db'
-    # Cambia 'tu_usuario', 'tu_contraseña' y 'tu_base_de_datos' según tus credenciales de Docker/MySQL
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:tu_contraseña@SIPSIXA_db/tu_base_de_datos'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
+    # Cargamos las configuraciones
+    app.config.from_object(config)
+    
+    # Inicializamos la base de datos y JWT
     db.init_app(app)
+    jwt = JWTManager(app)
 
-    # Registrar rutas o blueprints aquí
-    from app.routes import main_bp
-    app.register_blueprint(main_bp)
-
+    # Creamos las tablas en la base de datos dentro del contexto de la app
+    with app.app_context():
+        db.create_all()
+        
     return app
