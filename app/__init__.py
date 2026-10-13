@@ -1,32 +1,20 @@
-from flash import flask
-from flash_jwk_extended import jwtManager
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 
-#importamos las diferencia previamentes creadas 
-from app.config import config
-from app.extensions import db
+db = SQLAlchemy()
 
-#manjeos de rutas con blueprint
-
-
-#
 def create_app():
+    app = Flask(__name__)
+    
+    # Configuración de la Base de Datos MySQL usando el contenedor 'SIPSIXA_db'
+    # Cambia 'tu_usuario', 'tu_contraseña' y 'tu_base_de_datos' según tus credenciales de Docker/MySQL
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:tu_contraseña@SIPSIXA_db/tu_base_de_datos'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-    app = flask(
-__name__,
-static_folder = "static",
-template_folder = "templates"
-    )
-    #cargamos las configuraciones
-    app.config.from_object(config)
-    #inicializamos
     db.init_app(app)
-#inicializamos el JWT
-    jwtManager(app)
 
+    # Registrar rutas o blueprints aquí
+    from app.routes import main_bp
+    app.register_blueprint(main_bp)
 
-
-    #manejamos el registro del blueprint
-
-    with app.app_context():
-        db.create_all()
     return app
