@@ -12,10 +12,10 @@
         <nav class="nav" data-nav aria-label="Navegación principal">
             <a href="{{ url_for('main.index') }}" class="{{ 'is-active' if ep == 'main.index' }}">Inicio</a>
             <a href="{{ url_for('main.historia') }}" class="{{ 'is-active' if ep == 'main.historia' }}">Historia</a>
-            <a href="{{ url_for('main.proyectos') }}" class="{{ 'is-active' if ep == 'main.proyectos' }}">Proyectos</a>
+            <a href="{{ url_for('main.proyectos') }}" class="{{ 'is-active' if ep in ('main.proyectos', 'main.proyecto_detalle') }}">Proyectos</a>
             <a href="{{ url_for('main.investigacion') }}" class="{{ 'is-active' if ep == 'main.investigacion' }}">Investigación</a>
-            <a href="{{ url_for('main.eventos') }}" class="{{ 'is-active' if ep == 'main.eventos' }}">Eventos</a>
-            <a href="{{ url_for('main.hall_fama') }}" class="{{ 'is-active' if ep == 'main.hall_fama' }}">Hall de la Fama</a>
+            <a href="{{ url_for('main.eventos') }}" class="{{ 'is-active' if ep in ('main.eventos', 'main.evento_detalle') }}">Eventos</a>
+            <a href="{{ url_for('main.hall_fama') }}" class="{{ 'is-active' if ep in ('main.hall_fama', 'main.perfil') }}">Hall de la Fama</a>
         </nav>
 
         <div class="header-actions">

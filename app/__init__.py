@@ -5,6 +5,7 @@ from flask_jwt_extended import JWTManager
 from app.config import config
 from app.extensions import db
 from app.services.datos_demo import unsplash
+from app.services.formato import fecha_larga
 
 
 def create_app():
@@ -25,6 +26,7 @@ def create_app():
 
     # helper para las fotos de ejemplo dentro de las plantillas
     app.add_template_global(unsplash, name="unsplash")
+    app.add_template_filter(fecha_larga, name="fecha_larga")
 
     # manejamos el registro de los blueprints
     from app.routes import main_bp

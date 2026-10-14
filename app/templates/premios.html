@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Premios y Reconocimientos · Museo Digital{% endblock %}
+
+{% block content %}
+<section class="page">
+    <div class="container">
+        <div class="section-title section-title--gold">
+            <h2>Premios y Reconocimientos</h2>
+            <p>Los galardones que avalan la excelencia del programa</p>
+        </div>
+
+        <div class="grid grid--3">
+            {% for p in premios %}
+            <article class="card premio">
+                <div class="premio__img">
+                    <img src="{{ unsplash(p.imagen, 600, 300) }}" alt="{{ p.nombre }}" loading="lazy">
+                    <span class="premio__year">{{ p.anio }}</span>
+                    <span class="premio__cat">{{ p.categoria }}</span>
+                </div>
+                <div class="premio__body">
+                    <p class="premio__lugar">🏆 {{ p.lugar }}</p>
+                    <h3>{{ p.nombre }}</h3>
+                    <div class="premio__people">
+                        {% for n in p.participantes[:2] %}<span class="badge">{{ n }}</span>{% endfor %}
+                        {% if p.participantes|length > 2 %}<span class="badge">+{{ p.participantes|length - 2 }}</span>{% endif %}
+                    </div>
+                    <button class="btn btn--navy btn--block" type="button" data-abrir="dlg-premio-{{ p.id }}">Ver más</button>
+                </div>
+            </article>
+
+            <dialog class="modal" id="dlg-premio-{{ p.id }}" aria-label="{{ p.nombre }}">
+                <div class="modal__img">
+                    <img src="{{ unsplash(p.imagen, 700, 350) }}" alt="{{ p.nombre }}">
+                    <button class="modal__close" type="button" data-cerrar aria-label="Cerrar">✕</button>
+                    <span class="badge badge--gold modal__badge">{{ p.lugar }}</span>
+                </div>
+                <div class="modal__body">
+                    <p class="modal__meta">{{ p.anio }} · {{ p.categoria }}</p>
+                    <h3>{{ p.nombre }}</h3>
+                    <p class="modal__desc">{{ p.desc }}</p>
+                    <p class="modal__label">Participantes</p>
+                    <div class="premio__people">
+                        {% for n in p.participantes %}<span class="badge badge--gold badge--lg">{{ n }}</span>{% endfor %}
+                    </div>
+                </div>
+            </dialog>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

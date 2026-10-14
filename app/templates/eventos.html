@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Eventos · Museo Digital{% endblock %}
+
+{% block content %}
+<section class="page">
+    <div class="container" data-listado>
+        <div class="section-title">
+            <h2>Eventos</h2>
+            <p>Actividades académicas, culturales y de extensión del programa</p>
+        </div>
+
+        <div class="tabs" data-filtro="tipo" data-inicial="proximo">
+            <button type="button" class="tab is-active" data-valor="proximo">📅 Próximos</button>
+            <button type="button" class="tab" data-valor="realizado">✅ Realizados</button>
+        </div>
+
+        <div class="grid grid--3">
+            {% for e in eventos %}
+            <a href="{{ url_for('main.evento_detalle', evento_id=e.id) }}" class="card evento" data-item data-tipo="{{ e.tipo }}">
+                <span class="status status--{{ e.tipo }}"><i></i>{{ 'Próximo evento' if e.tipo == 'proximo' else 'Realizado' }}</span>
+                <h3>{{ e.nombre }}</h3>
+                <p class="evento__line">📅 {{ e.fecha|fecha_larga }}</p>
+                <p class="evento__line">📍 {{ e.lugar }}</p>
+                <p class="project-card__desc">{{ e.desc }}</p>
+                <span class="quick-card__go">Ver detalle →</span>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

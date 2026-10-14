@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Proyectos Destacados · Museo Digital{% endblock %}
+
+{% block content %}
+<section class="page">
+    <div class="container" data-listado>
+        <div class="section-title">
+            <h2>Proyectos Destacados</h2>
+            <p>Soluciones tecnológicas innovadoras desarrolladas por nuestros estudiantes</p>
+        </div>
+
+        <div class="toolbar">
+            <div class="chips" data-filtro="anio">
+                <button type="button" class="chip is-active" data-valor="Todos">Todos</button>
+                {% for a in anios %}<button type="button" class="chip" data-valor="{{ a }}">{{ a }}</button>{% endfor %}
+            </div>
+            <input class="search" type="search" placeholder="Buscar por proyecto, tecnología o integrante" data-buscar aria-label="Buscar proyectos">
+        </div>
+
+        <div class="grid grid--3">
+            {% for p in proyectos %}
+            <a href="{{ url_for('main.proyecto_detalle', proyecto_id=p.id) }}" class="card project-card" data-item
+               data-anio="{{ p.anio }}"
+               data-texto="{{ p.nombre }} {{ p.tecnologias|join(' ') }} {{ p.integrantes|join(' ') }} {{ p.asesor }} {{ p.anio }}">
+                <div class="project-card__img">
+                    <img src="{{ unsplash(p.imagen, 600, 300) }}" alt="{{ p.nombre }}" loading="lazy">
+                    <span class="project-card__badge">{{ p.anio }}</span>
+                </div>
+                <div class="project-card__body">
+                    <div class="project-card__tags">
+                        {% for t in p.tecnologias[:3] %}<span class="badge">{{ t }}</span>{% endfor %}
+                        {% if p.tecnologias|length > 3 %}<span class="badge">+{{ p.tecnologias|length - 3 }}</span>{% endif %}
+                    </div>
+                    <h3>{{ p.nombre }}</h3>
+                    <p class="project-card__desc">{{ p.desc }}</p>
+                    <span class="btn btn--red btn--block btn--static">Ver más</span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        <p class="empty" data-vacio hidden>No se encontraron proyectos con ese filtro.</p>
+    </div>
+</section>
+{% endblock %}

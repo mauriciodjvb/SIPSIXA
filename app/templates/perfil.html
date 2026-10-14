@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}{{ persona.nombre }} · Hall de la Fama{% endblock %}
+
+{% block content %}
+<section class="page">
+    <div class="container container--sm">
+        <a href="{{ url_for('main.hall_fama') }}" class="back-link">← Volver al Hall de la Fama</a>
+
+        <div class="perfil-head">
+            <div class="perfil-head__photo"><img src="{{ unsplash(persona.foto, 250, 250) }}" alt="{{ persona.nombre }}"></div>
+            <div>
+                <span class="badge badge--gold">{{ persona.categoria }}</span>
+                <h1>{{ persona.nombre }}</h1>
+                <p>Programa de Ingeniería de Sistemas · Unilibre</p>
+            </div>
+        </div>
+
+        <div class="detail-grid">
+            <div>
+                <h3 class="detail-sub detail-sub--first">Biografía</h3>
+                <p class="detail-text">{{ persona.bio }}</p>
+            </div>
+            <div class="card info-card">
+                <p class="info-card__title info-card__title--navy">🏆 Logros</p>
+                <ul class="stars">{% for l in persona.logros %}<li>{{ l }}</li>{% endfor %}</ul>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

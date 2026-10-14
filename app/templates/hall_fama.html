@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Hall de la Fama · Museo Digital{% endblock %}
+
+{% block content %}
+<section class="page">
+    <div class="container" data-listado>
+        <div class="hall-head">
+            <span class="hall-head__pill">🏆 Reconocimientos especiales</span>
+            <h2>Hall de la Fama</h2>
+            <p>Personas que han dejado huella en la historia del programa</p>
+            <div class="hall-head__line"></div>
+        </div>
+
+        <div class="toolbar toolbar--center">
+            <div class="chips chips--gold" data-filtro="categoria">
+                <button type="button" class="chip is-active" data-valor="Todos">Todos</button>
+                <button type="button" class="chip" data-valor="Docente">Docente</button>
+                <button type="button" class="chip" data-valor="Egresado">Egresado</button>
+                <button type="button" class="chip" data-valor="Estudiante">Estudiante</button>
+            </div>
+            <input class="search" type="search" placeholder="Buscar por nombre" data-buscar aria-label="Buscar personas">
+        </div>
+
+        <div class="grid grid--hall-lg">
+            {% for p in personas %}
+            <a href="{{ url_for('main.perfil', persona_id=p.id) }}" class="card hall-card hall-card--lg" data-item
+               data-categoria="{{ p.categoria.split(' ')[0] }}" data-texto="{{ p.nombre }} {{ p.categoria }}">
+                <div class="hall-card__photo hall-card__photo--lg">
+                    <img src="{{ unsplash(p.foto, 200, 200) }}" alt="{{ p.nombre }}" loading="lazy">
+                    <span class="hall-card__star">⭐</span>
+                </div>
+                <h4>{{ p.nombre }}</h4>
+                <p>{{ p.categoria }}</p>
+                <span class="hall-card__go">Ver perfil →</span>
+            </a>
+            {% endfor %}
+        </div>
+        <p class="empty" data-vacio hidden>No se encontraron personas con ese filtro.</p>
+    </div>
+</section>
+{% endblock %}

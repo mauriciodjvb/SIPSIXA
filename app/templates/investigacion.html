@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Investigación · Museo Digital{% endblock %}
+
+{% block content %}
+<section class="page">
+    <div class="container">
+        <div class="section-title">
+            <h2>Investigación</h2>
+            <p>Semilleros y grupos de investigación del programa con sus productos académicos</p>
+        </div>
+
+        <div class="grid grid--2">
+            {% for g in grupos %}
+            <article class="card grupo">
+                <div class="grupo__head">
+                    <div>
+                        <h3>🔬 {{ g.nombre }}</h3>
+                        <p class="grupo__linea">{{ g.linea }}</p>
+                    </div>
+                    <span class="badge badge--navy">{{ g.integrantes }} miembros</span>
+                </div>
+                <p class="grupo__lider"><strong>Liderado por:</strong> {{ g.lider }}</p>
+
+                <details class="grupo__more">
+                    <summary>Ver publicaciones y software</summary>
+                    <div class="grupo__content">
+                        <p class="grupo__label">📚 Publicaciones</p>
+                        <ul class="bullets">{% for x in g.publicaciones %}<li>{{ x }}</li>{% endfor %}</ul>
+                        {% if g.patentes %}
+                        <p class="grupo__label">📋 Patentes</p>
+                        <ul class="bullets">{% for x in g.patentes %}<li>{{ x }}</li>{% endfor %}</ul>
+                        {% endif %}
+                        <p class="grupo__label">💻 Software</p>
+                        <div class="project-card__tags">{% for x in g.software %}<span class="badge">{{ x }}</span>{% endfor %}</div>
+                    </div>
+                </details>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

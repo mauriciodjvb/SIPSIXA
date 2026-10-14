@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}{{ evento.nombre }} · Museo Digital{% endblock %}
+
+{% block content %}
+<section class="page">
+    <div class="container container--sm">
+        <a href="{{ url_for('main.eventos') }}" class="back-link">← Volver a Eventos</a>
+
+        <span class="status status--{{ evento.tipo }}"><i></i>{{ 'Próximo evento' if evento.tipo == 'proximo' else 'Evento realizado' }}</span>
+        <h1 class="detail-title">{{ evento.nombre }}</h1>
+        <div class="evento__meta">
+            <span>📅 {{ evento.fecha|fecha_larga }}</span>
+            <span>📍 {{ evento.lugar }}</span>
+        </div>
+        <p class="detail-text">{{ evento.desc }}</p>
+
+        {% if evento.tipo == 'realizado' %}
+        <h3 class="detail-sub">Galería de evidencias</h3>
+        <div class="gallery gallery--3">
+            {% for foto in galeria %}
+            <div class="gallery__item"><img src="{{ unsplash(foto, 400, 250) }}" alt="Evidencia {{ loop.index }}" loading="lazy"></div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="callout">
+            <p><strong>¿Quieres participar?</strong></p>
+            <p>Regístrate para recibir recordatorios y actualizaciones sobre este evento.</p>
+            <button type="button" class="btn btn--red">Registrarme al evento</button>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
