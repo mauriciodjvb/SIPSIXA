@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Indicadores · Museo Digital{% endblock %}
+{% block body_attrs %}data-pagina="indicadores" data-requiere="administrador"{% endblock %}
+
+{% block content %}
+<section class="page">
+    <div class="container container--lg">
+        <a href="{{ url_for('main.dashboard') }}" class="back-link">← Volver al Dashboard</a>
+
+        <div class="section-title">
+            <h2>Panel de Indicadores</h2>
+            <p>Métricas de impacto institucional del Programa de Ingeniería de Sistemas</p>
+        </div>
+
+        <div class="grid grid--cifras">
+            {% for c in datos.cifras %}
+            <div class="card cifra" style="--fondo: {{ c.fondo }}; --color: {{ c.color }}">
+                <div class="cifra__icono">{{ c.icono }}</div>
+                <div class="cifra__valor">{{ c.valor }}</div>
+                <div class="cifra__etiqueta">{{ c.etiqueta }}</div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="card caja">
+            <h3>Impacto institucional por año</h3>
+            <div class="grafico" role="img" aria-label="Proyectos, premios y eventos por año">
+                {% for anio in datos.serie %}
+                <div class="grafico__col">
+                    <div class="grafico__barras">
+                        {% for b in anio.barras %}
+                        <div class="grafico__barra" style="height: {{ b.alto }}%; background: {{ b.color }}" title="{{ b.nombre }}: {{ b.valor }}"></div>
+                        {% endfor %}
+                    </div>
+                    <span class="grafico__anio">{{ anio.anio }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="leyenda">
+                <span><i style="background: var(--red)"></i>Proyectos</span>
+                <span><i style="background: var(--gold)"></i>Premios</span>
+                <span><i style="background: var(--navy)"></i>Eventos</span>
+            </div>
+        </div>
+
+        <div class="grid grid--2">
+            <div class="card caja">
+                <h3>Aportes pendientes de validación</h3>
+                <div class="filas" data-pendientes></div>
+                <a href="{{ url_for('main.validacion') }}" class="btn btn--red btn--block">Ir a validar</a>
+            </div>
+            <div class="card caja">
+                <h3>Distribución por categoría</h3>
+                {% for d in datos.distribucion %}
+                <div class="barra">
+                    <div class="barra__top"><span>{{ d.nombre }}</span><span>{{ d.valor }}</span></div>
+                    <div class="barra__pista"><div class="barra__relleno" style="width: {{ d.ancho }}%; background: {{ d.color }}"></div></div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}<script src="{{ url_for('static', filename='js/panel.js') }}"></script>{% endblock %}

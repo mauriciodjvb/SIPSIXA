@@ -11,15 +11,18 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     {% block head %}{% endblock %}
 </head>
-<body>
-    {% include "partials/navbar.html" %}
+<body class="{% block body_class %}{% endblock %}" {% block body_attrs %}{% endblock %}>
+    {% block navbar %}{% include "partials/navbar.html" %}{% endblock %}
 
     <main>
         {% block content %}{% endblock %}
     </main>
 
-    {% include "partials/footer.html" %}
+    {% block footer %}{% include "partials/footer.html" %}{% endblock %}
 
+    {# Datos de ejemplo para inicializar el prototipo (se reemplazan por la base de datos en la fase 3) #}
+    <script type="application/json" id="semilla">{{ semilla_contenidos()|tojson }}</script>
+    <script src="{{ url_for('static', filename='js/sesion.js') }}"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     {% block scripts %}{% endblock %}
 </body>

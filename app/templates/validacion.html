@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Validación de contenidos · Museo Digital{% endblock %}
+{% block body_attrs %}data-pagina="validacion" data-requiere="administrador"{% endblock %}
+
+{% block content %}
+<section class="page">
+    <div class="container container--md">
+        <a href="{{ url_for('main.dashboard') }}" class="back-link">← Volver al Dashboard</a>
+
+        <div class="section-title">
+            <h2>Validación de Contenidos</h2>
+            <p>Revisa y aprueba los aportes enviados por la comunidad</p>
+        </div>
+
+        <div class="validar" data-lista></div>
+
+        <div class="vacio-grande" data-vacio hidden>
+            <div>🎉</div>
+            <h3>¡Todo al día!</h3>
+            <p>No hay contenidos pendientes de revisión.</p>
+        </div>
+    </div>
+</section>
+
+<div class="toast" data-toast role="status" aria-live="polite" hidden></div>
+{% endblock %}
+
+{% block scripts %}<script src="{{ url_for('static', filename='js/panel.js') }}"></script>{% endblock %}

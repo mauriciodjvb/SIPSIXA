@@ -19,7 +19,27 @@
         </nav>
 
         <div class="header-actions">
-            <a href="{{ url_for('main.login') }}" class="btn btn--white">Ingresar</a>
+            <a href="{{ url_for('main.login') }}" class="btn btn--white" data-sesion="fuera">Ingresar</a>
+
+            <div class="user-menu" data-sesion="dentro" hidden>
+                <button type="button" class="user-menu__btn" data-menu-usuario aria-haspopup="true" aria-expanded="false">
+                    <span class="avatar avatar--white" data-u-inicial>U</span>
+                    <span class="user-menu__name" data-u-primer></span>
+                    <span aria-hidden="true">▾</span>
+                </button>
+                <div class="user-menu__panel" data-menu-panel hidden>
+                    <div class="user-menu__head">
+                        <p class="user-menu__nombre" data-u-nombre></p>
+                        <p class="user-menu__rol" data-u-rol></p>
+                    </div>
+                    <a href="{{ url_for('main.dashboard') }}">🏠 Mi Dashboard</a>
+                    <a href="{{ url_for('main.registrar') }}">➕ Registrar contenido</a>
+                    <a href="{{ url_for('main.validacion') }}" data-solo-admin>✅ Validar contenido</a>
+                    <a href="{{ url_for('main.indicadores') }}" data-solo-admin>📊 Indicadores</a>
+                    <button type="button" class="user-menu__salir" data-cerrar-sesion>↪ Cerrar sesión</button>
+                </div>
+            </div>
+
             <button class="nav-toggle" type="button" data-nav-toggle aria-label="Abrir menú" aria-expanded="false">
                 <span></span><span></span><span></span>
             </button>

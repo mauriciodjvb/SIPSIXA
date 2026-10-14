@@ -148,3 +148,52 @@ EVENTOS = [
     {"id": 6, "nombre": "Feria de Empleo TechCareers 2024", "fecha": "2024-05-10", "lugar": "Patio Central del Campus", "tipo": "realizado",
      "desc": "Feria de empleo con participación de 25 empresas del sector TI. Más de 150 estudiantes conectados con oportunidades laborales y de práctica."},
 ]
+
+
+# ---------- Parte 4: panel de usuario, validación e indicadores ----------
+# Contenidos que esperan validación del administrador (semilla del prototipo).
+CONTENIDOS_SEMILLA = [
+    {"id": 1, "tipo": "Proyecto", "titulo": "SmartPark – Sistema de Parqueadero Inteligente", "autor": "Roberto Silva",
+     "autorCorreo": "roberto.silva@unilibre.edu.co", "fecha": "2025-08-10", "estado": "pendiente", "observaciones": ""},
+    {"id": 2, "tipo": "Premio", "titulo": "1er lugar Hackathon FinTech Latam 2025", "autor": "Mg. Alberto Quintero",
+     "autorCorreo": "alberto.quintero@unilibre.edu.co", "fecha": "2025-08-12", "estado": "pendiente", "observaciones": ""},
+    {"id": 3, "tipo": "Evento", "titulo": "Taller de Blockchain para Finanzas", "autor": "Dra. Carmen Vidal",
+     "autorCorreo": "carmen.vidal@unilibre.edu.co", "fecha": "2025-08-15", "estado": "pendiente", "observaciones": ""},
+    {"id": 4, "tipo": "Investigación", "titulo": "Publicación: Redes GAN aplicadas a síntesis de imágenes médicas", "autor": "Dr. Ricardo Leal",
+     "autorCorreo": "ricardo.leal@unilibre.edu.co", "fecha": "2025-08-18", "estado": "pendiente", "observaciones": ""},
+]
+
+
+def semilla_contenidos():
+    """Se incrusta en la página como JSON para inicializar los datos de demostración."""
+    return CONTENIDOS_SEMILLA
+
+
+CONTENIDOS_RECIENTES = [
+    {"titulo": "EcoTracker – App de huella de carbono", "tipo": "Proyecto", "fecha": "Ago 2025", "icono": "💡"},
+    {"titulo": "Hackathon INNOVATECH 2025", "tipo": "Evento", "fecha": "Jul 2025", "icono": "📅"},
+    {"titulo": "Publicación en Scopus Q1 – DataSIS", "tipo": "Investigación", "fecha": "Jun 2025", "icono": "🔬"},
+]
+
+_SERIE = [("2019", 3, 0, 2), ("2020", 6, 1, 3), ("2021", 8, 2, 4), ("2022", 10, 3, 5),
+          ("2023", 9, 2, 6), ("2024", 7, 3, 5), ("2025", 4, 1, 3)]
+_DISTRIBUCION = [("Proyectos", 47, "var(--red)"), ("Eventos", 28, "var(--navy)"), ("Hall de la Fama", 15, "var(--gold)"),
+                 ("Premios", 12, "#7e22ce"), ("Historia", 7, "#64748b")]
+
+INDICADORES = {
+    "cifras": [
+        {"icono": "🏆", "valor": "12", "etiqueta": "Premios obtenidos", "fondo": "#fefce8", "color": "#92400e"},
+        {"icono": "💡", "valor": "47", "etiqueta": "Proyectos registrados", "fondo": "#fff1f2", "color": "#C8102E"},
+        {"icono": "📅", "valor": "28", "etiqueta": "Eventos realizados", "fondo": "#f0fdf4", "color": "#166534"},
+        {"icono": "📚", "valor": "8", "etiqueta": "Publicaciones indexadas", "fondo": "#eef2f8", "color": "#1a3a6e"},
+        {"icono": "⭐", "valor": "15", "etiqueta": "Egresados destacados", "fondo": "#fdf4ff", "color": "#7e22ce"},
+        {"icono": "🔬", "valor": "4", "etiqueta": "Grupos de investigación", "fondo": "#f0f9ff", "color": "#0369a1"},
+    ],
+    # alturas en porcentaje (el valor máximo de la serie es 12)
+    "serie": [{"anio": a, "barras": [
+        {"valor": p, "alto": round(p / 12 * 100, 1), "color": "var(--red)", "nombre": "Proyectos"},
+        {"valor": r, "alto": round(r / 12 * 100, 1), "color": "var(--gold)", "nombre": "Premios"},
+        {"valor": e, "alto": round(e / 12 * 100, 1), "color": "var(--navy)", "nombre": "Eventos"},
+    ]} for a, p, r, e in _SERIE],
+    "distribucion": [{"nombre": n, "valor": v, "ancho": round(v / 60 * 100, 1), "color": c} for n, v, c in _DISTRIBUCION],
+}

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Mi Dashboard · Museo Digital{% endblock %}
+{% block body_attrs %}data-pagina="dashboard" data-requiere="usuario"{% endblock %}
+
+{% block content %}
+<section class="page">
+    <div class="container">
+        <div class="bienvenida">
+            <span class="bienvenida__avatar" data-u-inicial>U</span>
+            <div>
+                <h1>Bienvenido, <span data-u-nombre></span></h1>
+                <span class="bienvenida__rol" data-u-rol></span>
+            </div>
+        </div>
+
+        <div class="panel">
+            <aside class="panel__menu" aria-label="Menú del panel">
+                <a href="#resumen">🏠 Resumen</a>
+                <a href="#favoritos">❤️ Mis favoritos</a>
+                <a href="#notificaciones">🔔 Notificaciones</a>
+                <a href="{{ url_for('main.registrar') }}">➕ Registrar contenido</a>
+                <a href="{{ url_for('main.validacion') }}" data-solo-admin>✅ Validar contenido</a>
+                <a href="{{ url_for('main.indicadores') }}" data-solo-admin>📊 Indicadores</a>
+            </aside>
+
+            <div class="panel__main" id="resumen">
+                <div class="grid grid--4 resumen">
+                    <div class="card resumen__item"><div>📝</div><strong data-n-aportes>0</strong><span>Mis aportes</span></div>
+                    <div class="card resumen__item"><div>❤️</div><strong>{{ favoritos|length }}</strong><span>Favoritos</span></div>
+                    <div class="card resumen__item"><div>🔔</div><strong data-n-notif>0</strong><span>Notificaciones</span></div>
+                    <div class="card resumen__item"><div>👁️</div><strong>124</strong><span>Visitas</span></div>
+                </div>
+
+                <div class="card caja">
+                    <h3>Mis propuestas</h3>
+                    <p class="caja__nota">Estado de los contenidos que has enviado para validación.</p>
+                    <div class="filas" data-mis-propuestas></div>
+                </div>
+
+                <div class="card caja">
+                    <h3>Contenidos recientes</h3>
+                    <div class="filas">
+                        {% for c in recientes %}
+                        <div class="fila">
+                            <div class="fila__icono">{{ c.icono }}</div>
+                            <div class="fila__cuerpo"><p class="fila__titulo">{{ c.titulo }}</p><p class="fila__meta">{{ c.tipo }} · {{ c.fecha }}</p></div>
+                            <span class="estado estado--aprobado">Publicado</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="card caja" id="favoritos">
+                    <h3>Mis favoritos</h3>
+                    <div class="filas">
+                        {% for p in favoritos %}
+                        <a class="fila fila--enlace" href="{{ url_for('main.proyecto_detalle', proyecto_id=p.id) }}">
+                            <div class="fila__icono">❤️</div>
+                            <div class="fila__cuerpo"><p class="fila__titulo">{{ p.nombre }}</p><p class="fila__meta">Proyecto · {{ p.anio }}</p></div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="card caja" id="notificaciones">
+                    <h3>Notificaciones</h3>
+                    <div class="filas" data-notificaciones></div>
+                </div>
+
+                <div class="acciones">
+                    <a href="{{ url_for('main.registrar') }}" class="accion accion--red">
+                        <span>➕</span><div><strong>Registrar contenido</strong><p>Agrega proyectos, premios o eventos</p></div>
+                    </a>
+                    <a href="{{ url_for('main.validacion') }}" class="accion accion--gold" data-solo-admin>
+                        <span>✅</span><div><strong>Validar contenido</strong><p><span data-n-pendientes>0</span> aportes pendientes de revisión</p></div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}<script src="{{ url_for('static', filename='js/panel.js') }}"></script>{% endblock %}

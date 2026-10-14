@@ -3,8 +3,8 @@ from sqlalchemy import text
 
 from app.extensions import db
 from app.services.datos_demo import (
-    EVENTOS, GALERIA_EVENTO, GALERIA_HISTORIA, HALL_FAMA, INVESTIGACION,
-    LINEA_TIEMPO, PREMIOS, PROYECTOS, buscar,
+    CONTENIDOS_RECIENTES, EVENTOS, GALERIA_EVENTO, GALERIA_HISTORIA, HALL_FAMA,
+    INDICADORES, INVESTIGACION, LINEA_TIEMPO, PREMIOS, PROYECTOS, buscar,
 )
 
 main_bp = Blueprint("main", __name__)
@@ -77,9 +77,30 @@ def perfil(persona_id):
     return render_template("perfil.html", persona=persona)
 
 
+# ---------- Acceso y panel de usuario (prototipo: la sesión es de demostración) ----------
 @main_bp.route("/login")
 def login():
-    return render_template("en_construccion.html", titulo="Ingresar")
+    return render_template("login.html")
+
+
+@main_bp.route("/dashboard")
+def dashboard():
+    return render_template("dashboard.html", favoritos=PROYECTOS[:3], recientes=CONTENIDOS_RECIENTES)
+
+
+@main_bp.route("/registrar")
+def registrar():
+    return render_template("registrar.html")
+
+
+@main_bp.route("/validacion")
+def validacion():
+    return render_template("validacion.html")
+
+
+@main_bp.route("/indicadores")
+def indicadores():
+    return render_template("indicadores.html", datos=INDICADORES)
 
 
 @main_bp.route("/salud")

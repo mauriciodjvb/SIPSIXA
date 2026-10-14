@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Registrar contenido · Museo Digital{% endblock %}
+{% block body_attrs %}data-pagina="registrar" data-requiere="usuario"{% endblock %}
+
+{% block content %}
+<section class="page">
+    <div class="container container--sm">
+        <a href="{{ url_for('main.dashboard') }}" class="back-link">← Volver al Dashboard</a>
+
+        <div data-formulario>
+            <div class="section-title">
+                <h2>Registrar Contenido</h2>
+                <p>Completa el formulario para agregar un nuevo aporte al Museo Digital</p>
+            </div>
+
+            <div class="card caja caja--form">
+                <form class="form" data-form-contenido novalidate>
+                    <div class="field">
+                        <label for="c-categoria">Categoría</label>
+                        <select class="input" id="c-categoria" name="categoria" required>
+                            <option value="Proyecto">💡 Proyecto</option>
+                            <option value="Premio">🏆 Premio</option>
+                            <option value="Evento">📅 Evento</option>
+                            <option value="Investigación">🔬 Investigación</option>
+                            <option value="Hall de la Fama">⭐ Hall de la Fama</option>
+                            <option value="Historia">🕰️ Historia</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="c-titulo">Título</label>
+                        <input class="input" id="c-titulo" name="titulo" type="text" required minlength="5" maxlength="150" placeholder="Nombre del contenido a registrar">
+                    </div>
+                    <div class="field">
+                        <label for="c-anio">Año</label>
+                        <input class="input" id="c-anio" name="anio" type="number" required min="2019" max="2100" placeholder="2025">
+                    </div>
+                    <div class="field">
+                        <label for="c-participantes">Participantes / Integrantes <small>(opcional)</small></label>
+                        <input class="input" id="c-participantes" name="participantes" type="text" placeholder="Nombre Apellido, Nombre Apellido...">
+                    </div>
+                    <div class="field">
+                        <label for="c-desc">Descripción</label>
+                        <textarea class="input input--area" id="c-desc" name="descripcion" rows="4" required minlength="20" placeholder="Describe el contenido con detalle..."></textarea>
+                    </div>
+                    <div class="field">
+                        <label for="c-evidencias">Evidencias (fotos / documentos)</label>
+                        <label class="dropzone" for="c-evidencias" data-dropzone>
+                            <span class="dropzone__icon">📎</span>
+                            <span>Arrastra archivos aquí o <strong>haz clic para seleccionar</strong></span>
+                            <small>PNG, JPG, PDF hasta 10 MB cada uno</small>
+                        </label>
+                        <input class="sr-only" id="c-evidencias" name="evidencias" type="file" multiple accept=".png,.jpg,.jpeg,.pdf">
+                        <ul class="archivos" data-archivos></ul>
+                    </div>
+                    <p class="form-error" data-error hidden></p>
+                    <button type="submit" class="btn btn--red btn--block-lg">Enviar a validación →</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="exito" data-exito hidden>
+            <div class="exito__icono">✅</div>
+            <h2>¡Aporte enviado!</h2>
+            <p>Tu contenido ha sido enviado a revisión. El administrador lo evaluará y recibirás una notificación con el resultado.</p>
+            <a href="{{ url_for('main.dashboard') }}" class="btn btn--red">Volver al Dashboard</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}<script src="{{ url_for('static', filename='js/panel.js') }}"></script>{% endblock %}

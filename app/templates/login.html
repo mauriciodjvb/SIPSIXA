@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Ingresar · Museo Digital{% endblock %}
+{% block body_class %}pagina-login{% endblock %}
+{% block body_attrs %}data-pagina="login"{% endblock %}
+{% block navbar %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block content %}
+<section class="login">
+    <div class="login__box">
+        <div class="login__brand">
+            {% with clase = 'logo--lg' %}{% include "partials/logo.html" %}{% endwith %}
+            <h2>Universidad Libre</h2>
+            <p>Museo Digital · Ingeniería de Sistemas</p>
+        </div>
+
+        <div class="login__card">
+            <div class="login__tabs" role="tablist">
+                <button type="button" role="tab" data-modo="login" class="is-active">Ingresar</button>
+                <button type="button" role="tab" data-modo="registro">Crear cuenta</button>
+            </div>
+
+            <div class="login__body">
+                {# ----- Ingresar ----- #}
+                <form data-form="login" class="form" novalidate>
+                    <div class="field">
+                        <label for="login-correo">Correo electrónico</label>
+                        <input class="input" id="login-correo" name="correo" type="email" required autocomplete="email"
+                               placeholder="usuario@unilibre.edu.co" pattern="[^@\s]+@unilibre\.edu\.co"
+                               title="Usa tu correo institucional (termina en @unilibre.edu.co)">
+                    </div>
+                    <div class="field">
+                        <label for="login-clave">Contraseña</label>
+                        <input class="input" id="login-clave" name="clave" type="password" required autocomplete="current-password" placeholder="••••••••">
+                    </div>
+                    <p class="form-hint">Demo: usa <code>admin@unilibre.edu.co</code>, <code>docente@unilibre.edu.co</code> o cualquier correo institucional.</p>
+                    <p class="form-error" data-error hidden></p>
+                    <button type="submit" class="btn btn--red btn--block-lg">Ingresar →</button>
+                </form>
+
+                {# ----- Crear cuenta ----- #}
+                <form data-form="registro" class="form" novalidate hidden>
+                    <div class="field">
+                        <label for="reg-nombre">Nombre completo</label>
+                        <input class="input" id="reg-nombre" name="nombre" type="text" required minlength="3" autocomplete="name" placeholder="Tu nombre completo">
+                    </div>
+                    <div class="field">
+                        <label for="reg-correo">Correo institucional</label>
+                        <input class="input" id="reg-correo" name="correo" type="email" required autocomplete="email"
+                               placeholder="correo@unilibre.edu.co" pattern="[^@\s]+@unilibre\.edu\.co"
+                               title="Usa tu correo institucional (termina en @unilibre.edu.co)">
+                    </div>
+                    <div class="field">
+                        <label for="reg-clave">Contraseña</label>
+                        <input class="input" id="reg-clave" name="clave" type="password" required minlength="8" autocomplete="new-password" placeholder="Mínimo 8 caracteres">
+                    </div>
+                    <div class="field">
+                        <label for="reg-rol">Rol</label>
+                        <select class="input" id="reg-rol" name="rol" required>
+                            <option value="estudiante">Estudiante</option>
+                            <option value="docente">Docente</option>
+                            <option value="egresado">Egresado</option>
+                            <option value="administrador">Administrador</option>
+                        </select>
+                    </div>
+                    <p class="form-error" data-error hidden></p>
+                    <button type="submit" class="btn btn--red btn--block-lg">Crear cuenta →</button>
+                </form>
+            </div>
+        </div>
+
+        <a href="{{ url_for('main.index') }}" class="login__back">← Volver al inicio</a>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}<script src="{{ url_for('static', filename='js/panel.js') }}"></script>{% endblock %}
