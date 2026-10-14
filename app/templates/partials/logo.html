@@ -1,0 +1,5 @@
+{# Logo de la universidad. Si no existe static/img/logo.png se muestra "UL". #}
+<span class="logo {{ clase|default('') }}">
+    <span class="logo__fallback">UL</span>
+    <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Universidad Libre Colombia" onerror="this.remove()">
+</span>

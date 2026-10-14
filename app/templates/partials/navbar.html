@@ -1,0 +1,28 @@
+{% set ep = request.endpoint %}
+<header class="site-header">
+    <div class="container">
+        <a href="{{ url_for('main.index') }}" class="brand" aria-label="Ir al inicio">
+            {% include "partials/logo.html" %}
+            <span class="brand__text">
+                <span class="brand__title">Museo Digital</span><br>
+                <span class="brand__sub">Ing. de Sistemas · Unilibre</span>
+            </span>
+        </a>
+
+        <nav class="nav" data-nav aria-label="Navegación principal">
+            <a href="{{ url_for('main.index') }}" class="{{ 'is-active' if ep == 'main.index' }}">Inicio</a>
+            <a href="{{ url_for('main.historia') }}" class="{{ 'is-active' if ep == 'main.historia' }}">Historia</a>
+            <a href="{{ url_for('main.proyectos') }}" class="{{ 'is-active' if ep == 'main.proyectos' }}">Proyectos</a>
+            <a href="{{ url_for('main.investigacion') }}" class="{{ 'is-active' if ep == 'main.investigacion' }}">Investigación</a>
+            <a href="{{ url_for('main.eventos') }}" class="{{ 'is-active' if ep == 'main.eventos' }}">Eventos</a>
+            <a href="{{ url_for('main.hall_fama') }}" class="{{ 'is-active' if ep == 'main.hall_fama' }}">Hall de la Fama</a>
+        </nav>
+
+        <div class="header-actions">
+            <a href="{{ url_for('main.login') }}" class="btn btn--white">Ingresar</a>
+            <button class="nav-toggle" type="button" data-nav-toggle aria-label="Abrir menú" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </div>
+</header>

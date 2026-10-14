@@ -1,21 +1,23 @@
-#python
+# python
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 
-#entornos virtuales
+# entornos virtuales
 .venv/
 venv/
 
-# variables de entorno
+# variables de entorno (NUNCA subir)
 .env
 
 # VS code
 .vscode/
 
-#testing
+# testing
 .pytest_cache/
 
-#Base de datos
+# base de datos
 mysql_data/
+instance/
+*.db

@@ -1,8 +1,119 @@
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-<head>
-    <meta charset="UTF-8">
-    <title>Mi Proyecto</title>
-    <h1>kahf</h1>
-    <!-- Vinculación correcta con Flask -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
+{% extends "base.html" %}
+
+{% block title %}Inicio · Museo Digital Interactivo{% endblock %}
+
+{% block content %}
+
+{# ---------- Portada ---------- #}
+<section class="hero">
+    <div class="hero__bg">
+        <img src="{{ unsplash('photo-1562774053-701939374585', 1600, 900) }}" alt="">
+    </div>
+    <div class="hero__content">
+        <div class="hero__pill">
+            {% with clase = 'logo--xs' %}{% include "partials/logo.html" %}{% endwith %}
+            <span>Universidad Libre · Colombia</span>
+        </div>
+        <h1>MUSEO</h1>
+        <h1>DIGITAL</h1>
+        <p class="hero__sub">Ingeniería de Sistemas</p>
+        <a href="{{ url_for('main.historia') }}" class="btn btn--red btn--lg">Explorar museo →</a>
+    </div>
+</section>
+
+{# ---------- Cifras ---------- #}
+<section class="stats">
+    <div class="stats__grid">
+        <div class="stats__item"><div class="stats__num">47</div><div class="stats__label">Proyectos registrados</div></div>
+        <div class="stats__item"><div class="stats__num">12</div><div class="stats__label">Premios obtenidos</div></div>
+        <div class="stats__item"><div class="stats__num">4</div><div class="stats__label">Grupos de investigación</div></div>
+        <div class="stats__item"><div class="stats__num">800+</div><div class="stats__label">Estudiantes activos</div></div>
+    </div>
+</section>
+
+{# ---------- Acceso rápido ---------- #}
+<section class="section">
+    <div class="container">
+        <div class="section-title">
+            <h2>Explora el Museo</h2>
+            <p>Accede a las secciones principales de nuestra memoria institucional</p>
+        </div>
+        <div class="grid grid--4">
+            <a href="{{ url_for('main.historia') }}" class="card quick-card">
+                <div class="quick-card__icon">🕰️</div><h3>Historia</h3><p>Nuestra trayectoria</p><span class="quick-card__go">Ver →</span>
+            </a>
+            <a href="{{ url_for('main.proyectos') }}" class="card quick-card">
+                <div class="quick-card__icon">💡</div><h3>Proyectos Destacados</h3><p>Innovación estudiantil</p><span class="quick-card__go">Ver →</span>
+            </a>
+            <a href="{{ url_for('main.premios') }}" class="card quick-card">
+                <div class="quick-card__icon">🏆</div><h3>Premios</h3><p>Reconocimientos obtenidos</p><span class="quick-card__go">Ver →</span>
+            </a>
+            <a href="{{ url_for('main.eventos') }}" class="card quick-card">
+                <div class="quick-card__icon">📅</div><h3>Eventos</h3><p>Próximas actividades</p><span class="quick-card__go">Ver →</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+{# ---------- Proyectos recientes ---------- #}
+<section class="section section--alt">
+    <div class="container">
+        <div class="section-head">
+            <div class="section-title">
+                <h2>Proyectos Recientes</h2>
+                <p>Los trabajos más destacados de nuestros estudiantes</p>
+            </div>
+            <a href="{{ url_for('main.proyectos') }}" class="link-more">Ver todos →</a>
+        </div>
+        <div class="grid grid--3">
+            {% for p in proyectos %}
+            <a href="{{ url_for('main.proyectos') }}" class="card project-card">
+                <div class="project-card__img">
+                    <img src="{{ unsplash(p.imagen, 600, 300) }}" alt="{{ p.nombre }}" loading="lazy">
+                </div>
+                <div class="project-card__body">
+                    <div class="project-card__tags">
+                        {% for t in p.tecnologias[:3] %}<span class="badge">{{ t }}</span>{% endfor %}
+                    </div>
+                    <h3>{{ p.nombre }}</h3>
+                    <p class="project-card__desc">{{ p.desc }}</p>
+                    <p class="project-card__year">{{ p.anio }}</p>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{# ---------- Hall de la Fama ---------- #}
+<section class="section">
+    <div class="container">
+        <div class="section-head">
+            <div class="section-title section-title--gold">
+                <h2>Hall de la Fama</h2>
+                <p>Personas que han marcado la historia del programa</p>
+            </div>
+            <a href="{{ url_for('main.hall_fama') }}" class="link-more">Ver todos →</a>
+        </div>
+        <div class="grid grid--hall">
+            {% for p in destacados %}
+            <a href="{{ url_for('main.hall_fama') }}" class="card hall-card">
+                <div class="hall-card__photo"><img src="{{ unsplash(p.foto, 200, 200) }}" alt="{{ p.nombre }}" loading="lazy"></div>
+                <h4>{{ p.nombre }}</h4>
+                <p>{{ p.categoria }}</p>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{# ---------- Llamado a la acción ---------- #}
+<section class="cta">
+    <div class="container">
+        <h2>¿Eres parte de la comunidad Unilibre?</h2>
+        <p>Ingresa con tu cuenta institucional para registrar proyectos, eventos y reconocimientos.</p>
+        <a href="{{ url_for('main.login') }}" class="btn btn--red">Ingresar al sistema →</a>
+    </div>
+</section>
+
+{% endblock %}

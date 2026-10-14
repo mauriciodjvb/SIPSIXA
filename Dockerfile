@@ -1,32 +1,29 @@
-
 # Imagen base
 FROM python:3.12-slim
 
-# Evitamos que Python cree archivos .pyc
+# evitamos que python cree archivos .pyc
 ENV PYTHONDONTWRITEBYTECODE=1
-
-# Permite visualizar los logs
+# permite visualizar los logs
 ENV PYTHONUNBUFFERED=1
 
-# Directorio de trabajo
+# directorio de trabajo
 WORKDIR /app
 
-# Dependencias del sistema
+# dependencias del sistema
 RUN apt-get update \
     && apt-get install -y --no-install-recommends gcc \
     && rm -rf /var/lib/apt/lists/*
 
-# Copiamos las dependencias de Python
+# dependencias de python
 COPY requirements.txt .
-
-# Instalamos las dependencias
+# instalamos las dependencias
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Código de la aplicación
+# codigo de la aplicacion
 COPY . .
 
-# Puerto
+# puerto
 EXPOSE 5000
 
-# Ejecución
+# ejecucion
 CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "3", "run:app"]

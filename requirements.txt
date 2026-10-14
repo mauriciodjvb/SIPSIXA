@@ -1,14 +1,16 @@
 # Framework
 Flask==3.1.1
-#ORM trabaja con la BD
+# ORM trabaja con la BD
 Flask-SQLAlchemy==3.1.1
-#JWT
+# JWT
 Flask-JWT-Extended==4.7.1
-#Validacion y serializacion de Datos
+# Validacion y serializacion de Datos
 marshmallow==4.0.1
-#Driver de conexion 
-PyMYSQL==1.1.1
-#servidor WSGI
+# Driver de conexion a MySQL
+PyMySQL==1.1.1
+# Necesario para que PyMySQL se autentique con MySQL 8 (caching_sha2_password)
+cryptography==45.0.5
+# servidor WSGI
 gunicorn==23.0.0
-#utilidades de segurida y pss
+# utilidades de seguridad y password
 Werkzeug==3.1.3

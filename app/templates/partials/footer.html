@@ -1,0 +1,37 @@
+<footer class="site-footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div>
+                <div class="footer-brand">
+                    {% with clase = 'logo--sm' %}{% include "partials/logo.html" %}{% endwith %}
+                    <div>
+                        <strong>Museo Digital Interactivo</strong>
+                        <span>Universidad Libre · Colombia</span>
+                    </div>
+                </div>
+                <p>Plataforma de memoria institucional del Programa de Ingeniería de Sistemas.</p>
+            </div>
+            <div>
+                <h4>Accesos rápidos</h4>
+                <ul>
+                    <li><a href="{{ url_for('main.historia') }}">Historia</a></li>
+                    <li><a href="{{ url_for('main.proyectos') }}">Proyectos</a></li>
+                    <li><a href="{{ url_for('main.premios') }}">Premios</a></li>
+                    <li><a href="{{ url_for('main.investigacion') }}">Investigación</a></li>
+                    <li><a href="{{ url_for('main.eventos') }}">Eventos</a></li>
+                    <li><a href="{{ url_for('main.hall_fama') }}">Hall de la Fama</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Institucional</h4>
+                <p>Programa de Ingeniería de Sistemas</p>
+                <p>Facultad de Ingeniería · Universidad Libre</p>
+                <p style="margin-top: .5rem">sistemas@unilibre.edu.co</p>
+                <p>+57 (1) 382-1000</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            © 2026 Museo Digital Interactivo · Ingeniería de Sistemas · Universidad Libre Colombia
+        </div>
+    </div>
+</footer>
