@@ -14,7 +14,7 @@ services:
 
     # Modo desarrollo: el código se monta desde tu carpeta y gunicorn se recarga solo,
     # así ves tus cambios de HTML/CSS/JS sin reconstruir la imagen.
-    command: gunicorn --bind 0.0.0.0:5000 --workers 3 --reload run:app
+    command: gunicorn --bind 0.0.0.0:5000 --workers 3 --reload run:wsgi_app
     volumes:
       - ./app:/app/app
 

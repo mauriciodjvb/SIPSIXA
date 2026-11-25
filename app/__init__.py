@@ -1,39 +1,34 @@
 from flask import Flask
 from flask_jwt_extended import JWTManager
 
-# importamos las dependencias previamente creadas
 from app.config import config
 from app.extensions import db
 from app.services.datos_demo import semilla_contenidos, unsplash
 from app.services.formato import fecha_larga
 
 
-def create_app():
-    app = Flask(
+def create_app(*args, **kwargs):
+    flask_app = Flask(
         __name__,
         static_folder="static",
         template_folder="templates",
     )
 
-    # cargamos las configuraciones
-    app.config.from_object(config)
+    flask_app.config.from_object(config)
 
-    # inicializamos la base de datos
-    db.init_app(app)
+    db.init_app(flask_app)
+    JWTManager(flask_app)
 
-    # inicializamos el JWT
-    JWTManager(app)
+    flask_app.add_template_global(unsplash, name="unsplash")
+    flask_app.add_template_filter(fecha_larga, name="fecha_larga")
+    flask_app.add_template_global(semilla_contenidos, name="semilla_contenidos")
 
-    # helper para las fotos de ejemplo dentro de las plantillas
-    app.add_template_global(unsplash, name="unsplash")
-    app.add_template_filter(fecha_larga, name="fecha_larga")
-    app.add_template_global(semilla_contenidos, name="semilla_contenidos")
+    from app.routes import auth_bp, main_bp
+    flask_app.register_blueprint(main_bp)
+    flask_app.register_blueprint(auth_bp)
 
-    # manejamos el registro de los blueprints
-    from app.routes import main_bp
-    app.register_blueprint(main_bp)
-
-    with app.app_context():
+    with flask_app.app_context():
+        import app.models
         db.create_all()
 
-    return app
+    return flask_app

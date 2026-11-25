@@ -1,1 +1,3 @@
-# Capa "repositories": se implementa en las fases siguientes del proyecto.
+from app.repositories.usuario_repository import UsuarioRepository
+
+__all__ = ["UsuarioRepository"]
