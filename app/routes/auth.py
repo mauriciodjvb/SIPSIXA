@@ -9,7 +9,7 @@ from app.models.persona import Persona
 from app.models.usuario import Usuario
 from app.utils.seguridad import roles_required
 
-auth_bp = Blueprint('auth', __name__, url_prefix='/api/auth')
+auth_bp = Blueprint("auth", __name__, url_prefix="/api/auth")
 
 
 class RegistroSchema(Schema):
@@ -37,51 +37,52 @@ login_schema = LoginSchema()
 
 
 def _separar_nombre_completo(nombre_completo: str | None) -> tuple[str, str]:
-    limpio = ' '.join((nombre_completo or '').strip().split())
+    limpio = " ".join((nombre_completo or "").strip().split())
     if not limpio:
-        return 'Usuario', 'SIPSIXA'
-    partes = limpio.split(' ', 1)
+        return "Usuario", "SIPSIXA"
+    partes = limpio.split(" ", 1)
     if len(partes) == 1:
-        return partes[0], 'SIPSIXA'
+        return partes[0], "SIPSIXA"
     return partes[0], partes[1]
 
 
-@auth_bp.route('/registro', methods=['POST'])
+@auth_bp.route("/registro", methods=["POST"])
 def registro():
     payload = request.get_json(silent=True) or {}
     try:
         datos = registro_schema.load(payload)
     except ValidationError as err:
-        return jsonify(error='Datos de registro inválidos', detalles=err.messages), 400
+        return jsonify(error="Datos de registro inválidos", detalles=err.messages), 400
 
-    correo = datos['correo'].strip().lower()
+    correo = datos["correo"].strip().lower()
     if Usuario.query.filter_by(correo=correo).first():
-        return jsonify(error='El correo ya está registrado'), 409
+        return jsonify(error="El correo ya está registrado"), 409
 
-    rol_solicitado = str(datos.get('rol') or RolUsuario.COLABORADOR.value).strip().lower()
+    # Por seguridad, el registro público solo permite colaborador o investigador
+    rol_solicitado = str(datos.get("rol") or RolUsuario.COLABORADOR.value).strip().lower()
     try:
         rol_enum = RolUsuario(rol_solicitado)
     except ValueError:
         return (
             jsonify(
-                error='Rol inválido',
+                error="Rol inválido",
                 roles_permitidos=[RolUsuario.COLABORADOR.value, RolUsuario.INVESTIGADOR.value],
             ),
             400,
         )
 
     if rol_enum == RolUsuario.ADMIN:
-        return jsonify(error='No está permitido auto-registrarse con rol administrador'), 403
+        return jsonify(error="No está permitido auto-registrarse con rol administrador"), 403
 
-    nombres = (datos.get('nombres') or '').strip()
-    apellidos = (datos.get('apellidos') or '').strip()
+    nombres = (datos.get("nombres") or "").strip()
+    apellidos = (datos.get("apellidos") or "").strip()
     if not nombres or not apellidos:
-        nom_calc, ape_calc = _separar_nombre_completo(datos.get('nombre'))
+        nom_calc, ape_calc = _separar_nombre_completo(datos.get("nombre"))
         nombres = nombres or nom_calc
         apellidos = apellidos or ape_calc
 
     usuario = Usuario(correo=correo, rol=rol_enum, activo=True)
-    usuario.set_password(datos['clave'])
+    usuario.set_password(datos["clave"])
 
     persona = Persona(
         nombres=nombres,
@@ -95,15 +96,15 @@ def registro():
         db.session.commit()
     except IntegrityError:
         db.session.rollback()
-        return jsonify(error='No se pudo completar el registro por conflicto de datos'), 409
+        return jsonify(error="No se pudo completar el registro por conflicto de datos"), 409
 
     token = create_access_token(
         identity=str(usuario.id),
-        additional_claims={'rol': usuario.rol.value},
+        additional_claims={"rol": usuario.rol.value},
     )
     return (
         jsonify(
-            mensaje='Usuario registrado exitosamente',
+            mensaje="Usuario registrado exitosamente",
             access_token=token,
             usuario=usuario.to_dict(),
         ),
@@ -111,30 +112,30 @@ def registro():
     )
 
 
-@auth_bp.route('/login', methods=['POST'])
+@auth_bp.route("/login", methods=["POST"])
 def login():
     payload = request.get_json(silent=True) or {}
     try:
         datos = login_schema.load(payload)
     except ValidationError as err:
-        return jsonify(error='Datos de inicio de sesión inválidos', detalles=err.messages), 400
+        return jsonify(error="Datos de inicio de sesión inválidos", detalles=err.messages), 400
 
-    correo = datos['correo'].strip().lower()
+    correo = datos["correo"].strip().lower()
     usuario = Usuario.query.filter_by(correo=correo).first()
 
-    if usuario is None or not usuario.check_password(datos['clave']):
-        return jsonify(error='Correo o contraseña incorrectos'), 401
+    if usuario is None or not usuario.check_password(datos["clave"]):
+        return jsonify(error="Correo o contraseña incorrectos"), 401
 
     if not usuario.activo:
-        return jsonify(error='La cuenta de usuario está inactiva'), 403
+        return jsonify(error="La cuenta de usuario está inactiva"), 403
 
     token = create_access_token(
         identity=str(usuario.id),
-        additional_claims={'rol': usuario.rol.value},
+        additional_claims={"rol": usuario.rol.value},
     )
     return (
         jsonify(
-            mensaje='Inicio de sesión exitoso',
+            mensaje="Inicio de sesión exitoso",
             access_token=token,
             usuario=usuario.to_dict(),
         ),
@@ -142,23 +143,23 @@ def login():
     )
 
 
-@auth_bp.route('/perfil', methods=['GET'])
+@auth_bp.route("/perfil", methods=["GET"])
 @jwt_required()
 def perfil():
     identidad = get_jwt_identity()
     try:
         usuario_id = int(identidad)
     except (TypeError, ValueError):
-        return jsonify(error='Token inválido'), 401
+        return jsonify(error="Token inválido"), 401
 
     usuario = Usuario.query.get(usuario_id)
     if usuario is None:
-        return jsonify(error='Usuario no encontrado'), 404
+        return jsonify(error="Usuario no encontrado"), 404
 
     return jsonify(usuario=usuario.to_dict()), 200
 
 
-@auth_bp.route('/admin/chequeo', methods=['GET'])
+@auth_bp.route("/admin/chequeo", methods=["GET"])
 @roles_required(RolUsuario.ADMIN)
 def admin_chequeo():
-    return jsonify(mensaje='Acceso autorizado para administrador'), 200
+    return jsonify(mensaje="Acceso autorizado para administrador"), 200
